@@ -1,0 +1,90 @@
+name: bible_app
+description: "This Bible app is designed to help believers read, study, and reflect on Scripture with ease and clarity. It provides access to multiple Bible versions and languages, allowing users to read God’s Word in the translation that speaks to them best. Users can bookmark verses and chapters to quickly return to important passages, making personal study, prayer, and teaching more organized and meaningful. The app is built with a simple and distraction-free interface, ensuring a smooth reading experience across all devices. Whether you are reading daily, preparing for Bible study, or exploring Scripture in different languages, this app offers a reliable and accessible way to stay connected to the Word of God."
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.8.1
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8
+  go_router: ^17.0.0
+  flutter_bloc: ^9.1.0
+  either_dart: ^1.0.0
+  logger: ^2.3.0
+  equatable: ^2.0.5
+  get: ^4.6.6
+  intl: ^0.19.0
+  # shimmer: ^3.0.0
+  # flutter_svg: ^2.0.17
+  flutter_native_splash: ^2.4.6
+  share_plus: ^12.0.1
+  path_provider: ^2.1.5
+
+  cached_network_image: ^3.4.1
+  hive_flutter: ^1.1.0
+  flutter_cache_manager: ^3.3.2
+  scrollable_positioned_list: ^0.3.8
+  flutter_screenutil: ^5.9.3
+  # rxdart: ^0.28.0
+  tutorial_coach_mark: ^1.3.1
+  toastification: ^3.0.3
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^6.0.0
+  go_router_builder: ^3.0.0
+  build_runner: ^2.4.15
+  flutter_launcher_icons: ^0.14.3
+  hive_generator: ^2.0.1
+  very_good_analysis: ^9.0.0
+
+flutter_launcher_icons:
+  android: true
+  image_path: "assets/icon/bible1.png"
+  adaptive_icon_background: "#000000"
+  adaptive_icon_foreground: "assets/icon/bible1.png"
+
+flutter_app_name:
+  name: "Bible For All"
+
+flutter_native_splash:
+  fullscreen: true
+  image: assets/icon/bible1.png
+  color: "#000000"
+  android: true
+  ios: true
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/images/onboarding/
+    - assets/bible/
+    - assets/svgs/
+    - assets/icon/
+
+  fonts:
+    - family: Poppins
+      fonts:
+        - asset: assets/fonts/Poppins-Regular.ttf
+        - asset: assets/fonts/Poppins-Thin.ttf
+        - asset: assets/fonts/Poppins-Medium.ttf
+        - asset: assets/fonts/Poppins-Light.ttf
+        - asset: assets/fonts/Poppins-SemiBold.ttf
+    - family: JosefinSans
+      fonts:
+        - asset: assets/fonts/JosefinSans-Regular.ttf
+        - asset: assets/fonts/JosefinSans-Medium.ttf
+        - asset: assets/fonts/JosefinSans-ExtraLight.ttf
+        - asset: assets/fonts/JosefinSans-Bold.ttf
+    - family: Sora
+      fonts:
+        - asset: assets/fonts/Sora-Variable.ttf
