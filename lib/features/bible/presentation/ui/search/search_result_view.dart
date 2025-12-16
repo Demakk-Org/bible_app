@@ -5,7 +5,7 @@ import 'package:bible_app/common/utils/types.dart';
 import 'package:bible_app/features/bible/data/model/verse.dart';
 import 'package:bible_app/features/bible/presentation/bloc/bible_bloc.dart';
 import 'package:bible_app/features/bible/presentation/bloc/bible_state.dart';
-import 'package:bible_app/features/bible/presentation/ui/search_display_grouped_by_book.dart';
+import 'package:bible_app/features/bible/presentation/ui/search/search_display_grouped_by_book.dart';
 
 class SearchResultView extends StatelessWidget {
   const SearchResultView({super.key});

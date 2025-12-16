@@ -98,6 +98,18 @@ class BibleBloc extends Cubit<BibleState> {
     );
   }
 
+  Future<void> removeBookmark(Verse verse) async {
+    final result = await _bibleRepository.removeBookmark(verse);
+    result.fold(
+      (failure) {
+        emit(state.copyWith(error: failure.message));
+      },
+      (bookmarks) {
+        emit(state.copyWith(bookmarkedVerses: bookmarks));
+      },
+    );
+  }
+
   void changeSearchFilter(SearchFilter filter) {
     emit(state.copyWith(searchFilter: filter));
   }

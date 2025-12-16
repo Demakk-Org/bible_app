@@ -14,9 +14,8 @@ class BibleRoute extends GoRouteData with _$BibleRoute {
     TypedGoRoute<BibleRoute>(
       path: "/bible",
       routes: [
-        TypedGoRoute<BibleNavigationRoute>(
-          path: "bible-navigation",
-        ),
+        TypedGoRoute<BookmarksRoute>(path: "bookmarks"),
+        TypedGoRoute<BibleNavigationRoute>(path: "bible-navigation"),
       ],
     ),
   ],
@@ -38,5 +37,14 @@ class BibleNavigationRoute extends GoRouteData with _$BibleNavigationRoute {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return const BibleNavigationScreen();
+  }
+}
+
+class BookmarksRoute extends GoRouteData with _$BookmarksRoute {
+  BookmarksRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const BookmarkedVersesScreen();
   }
 }

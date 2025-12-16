@@ -1,3 +1,6 @@
+import 'package:bible_app/common/utils/logger.dart';
+import 'package:bible_app/features/daily_verse/data/repository_impl/daily_verse_repository_impl.dart';
+import 'package:bible_app/features/daily_verse/presentation/bloc/daily_verse_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -55,12 +58,14 @@ class _AppState extends State<App> {
       );
     }
 
+    AppLogger.info('Initialized', name: "App: build");
     final deps = _dependencies!;
 
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider.value(value: deps.bibleRepository),
         RepositoryProvider.value(value: deps.tutorialRepository),
+        RepositoryProvider.value(value: deps.dailyVerseRepository),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -82,6 +87,11 @@ class _AppState extends State<App> {
             )..initialize(),
           ),
           BlocProvider(create: (context) => OnboardingCubit()..checkIfSeen()),
+          BlocProvider(
+            create: (context) =>
+                DailyVerseBloc(context.read<DailyVerseRepositoryImpl>())
+                  ..getDailyVerse(DateTime.now()),
+          ),
         ],
         child: BlocBuilder<ThemeCubit, ThemeState>(
           builder: (context, state) {

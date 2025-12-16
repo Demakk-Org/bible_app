@@ -20,6 +20,10 @@ class BibleDataSources {
 
   Future<List<Bible>> initializeBibleFromLocalSource() async {
     try {
+      if (bibleBox.values.isNotEmpty) {
+        return bibleBox.values.toList();
+      }
+
       // Discover all bible JSON files from the asset manifest.
       final manifestString = await rootBundle.loadString('AssetManifest.json');
       final manifestMap = jsonDecode(manifestString) as Map<String, dynamic>;
@@ -236,6 +240,31 @@ class BibleDataSources {
         name: 'Bible Data source: get bookmarks',
       );
       return bookmarks;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<List<Verse>> removeBookmark(Verse verse) async {
+    try {
+      int? bookmarkIndex;
+      for (var i = 0; i < bookmarkBox.length; i++) {
+        final v = bookmarkBox.getAt(i);
+        if (v == null) continue;
+        if (v.bookName == verse.bookName &&
+            v.book == verse.book &&
+            v.chapter == verse.chapter &&
+            v.verse == verse.verse) {
+          bookmarkIndex = i;
+          break;
+        }
+      }
+
+      if (bookmarkIndex != null) {
+        await bookmarkBox.deleteAt(bookmarkIndex);
+      }
+
+      return bookmarkBox.values.toList();
     } catch (e) {
       rethrow;
     }

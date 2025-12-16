@@ -32,18 +32,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           "Access the full Bible, highlight verses, and join group studies with ease.",
       imageAsset: "assets/images/onboarding/2.png",
     ),
-    OnboardingPageModel(
-      title: "Audio",
-      description:
-          "Enjoy inspiring sermons and Bible audio wherever you are, hands-free.",
-      imageAsset: "assets/images/onboarding/3.png",
-    ),
-    OnboardingPageModel(
-      title: "Quiz",
-      description:
-          "Strengthen your understanding through fun, interactive Bible quizzes.",
-      imageAsset: "assets/images/onboarding/4.png",
-    ),
   ];
 
   void _next() {

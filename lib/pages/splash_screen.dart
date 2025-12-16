@@ -1,3 +1,4 @@
+import 'package:bible_app/common/utils/logger.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:bible_app/core/router/navigation.dart';
@@ -16,18 +17,20 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     if (!widget.isInitialized) {
+      AppLogger.info('Not initialized', name: "SplashScreen: build");
       return const _Screen();
     }
 
-    return BlocListener<OnboardingCubit, bool>(
-      listener: (context, onboardingState) {
+    return BlocBuilder<OnboardingCubit, bool?>(
+      builder: (context, onboardingState) {
         if (onboardingState == false) {
           OnboardingRoute().go(context);
         } else {
           BibleRoute().go(context);
         }
+
+        return _Screen();
       },
-      child: const _Screen(),
     );
   }
 }

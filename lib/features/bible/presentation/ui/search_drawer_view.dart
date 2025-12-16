@@ -4,7 +4,7 @@ import 'package:bible_app/common/utils/types.dart';
 import 'package:bible_app/core/theme/app_colors.dart';
 import 'package:bible_app/features/bible/presentation/bloc/bible_bloc.dart';
 import 'package:bible_app/features/bible/presentation/bloc/bible_state.dart';
-import 'package:bible_app/features/bible/presentation/ui/search_result_view.dart';
+import 'package:bible_app/features/bible/presentation/ui/search/search_result_view.dart';
 
 class SearchDrawerView extends StatelessWidget {
   const SearchDrawerView({super.key});

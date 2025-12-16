@@ -9,7 +9,7 @@ import 'package:bible_app/features/bible/data/model/bible_page.dart';
 import 'package:bible_app/features/bible/data/model/verse.dart';
 import 'package:bible_app/features/bible/presentation/bloc/bible_bloc.dart';
 import 'package:bible_app/features/bible/presentation/bloc/bible_state.dart';
-import 'package:bible_app/features/bible/presentation/ui/verse_block.dart';
+import 'package:bible_app/features/bible/presentation/ui/bible/verse_block.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class BibleSection extends StatefulWidget {

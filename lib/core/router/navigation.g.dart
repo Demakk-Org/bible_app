@@ -74,6 +74,10 @@ RouteBase get $mainShellRoute => ShellRouteData.$route(
           factory: _$BibleRoute._fromState,
           routes: [
             GoRouteData.$route(
+              path: 'bookmarks',
+              factory: _$BookmarksRoute._fromState,
+            ),
+            GoRouteData.$route(
               path: 'bible-navigation',
               factory: _$BibleNavigationRoute._fromState,
             ),
@@ -92,6 +96,28 @@ mixin _$BibleRoute on GoRouteData {
   @override
   String get location => GoRouteData.$location(
         '/bible',
+      );
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+mixin _$BookmarksRoute on GoRouteData {
+  static BookmarksRoute _fromState(GoRouterState state) => BookmarksRoute();
+
+  @override
+  String get location => GoRouteData.$location(
+        '/bible/bookmarks',
       );
 
   @override

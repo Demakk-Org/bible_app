@@ -1,8 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-// import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:bible_app/common/utils/logger.dart';
 import 'package:bible_app/core/data/tutorial/tutorial.dart';
 import 'package:bible_app/features/bible/data/model/bible.dart';
@@ -17,21 +16,7 @@ class AppBootstrap {
     WidgetsFlutterBinding.ensureInitialized();
 
     await _initHiveAndRegisterAdapters();
-
-    await SystemChrome.setEnabledSystemUIMode(
-      SystemUiMode.manual,
-      overlays: [SystemUiOverlay.top],
-    );
-    SystemChrome.setSystemUIOverlayStyle(
-      const SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
-        statusBarIconBrightness: Brightness.light,
-        systemNavigationBarColor: Colors.transparent,
-        systemNavigationBarIconBrightness: Brightness.light,
-      ),
-    );
-
-    // await initializeDateFormatting();
+    await initializeDateFormatting();
   }
 
   static Future<void> _initHiveAndRegisterAdapters() async {

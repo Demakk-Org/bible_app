@@ -1,3 +1,4 @@
+import 'package:bible_app/features/bible/presentation/ui/bookmark/bookmark_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:bible_app/core/router/navigation.dart';
@@ -7,10 +8,10 @@ import 'package:bible_app/features/bible/data/model/bible_page.dart';
 import 'package:bible_app/features/bible/data/model/verse.dart';
 import 'package:bible_app/features/bible/presentation/bloc/bible_bloc.dart';
 import 'package:bible_app/features/bible/presentation/bloc/bible_state.dart';
-import 'package:bible_app/features/bible/presentation/ui/bible_section.dart';
+import 'package:bible_app/features/bible/presentation/ui/bible/bible_section.dart';
 import 'package:bible_app/features/bible/presentation/ui/search_drawer_view.dart';
-import 'package:bible_app/features/bible/presentation/ui/select_bible_view.dart';
-import 'package:bible_app/features/bible/presentation/ui/verse_block.dart';
+import 'package:bible_app/features/bible/presentation/ui/bible/select_bible_view.dart';
+import 'package:bible_app/features/bible/presentation/ui/bible/verse_block.dart';
 
 class BibleView extends StatefulWidget {
   const BibleView({super.key});
@@ -217,6 +218,7 @@ class _BibleAppBar extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
+                BookmarkButton(),
                 IconButton.filled(
                   onPressed: () {
                     searchCallbackFn();

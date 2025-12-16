@@ -17,5 +17,7 @@ abstract class BibleRepository {
 
   Future<Either<Failure, List<Verse>>> getBookmarks();
 
+  Future<Either<Failure, List<Verse>>> removeBookmark(Verse verse);
+
   Future<Either<Failure, void>> removeBible(String id);
 }

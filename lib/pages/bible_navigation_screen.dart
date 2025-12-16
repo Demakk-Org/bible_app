@@ -23,10 +23,7 @@ class BibleNavigationScreen extends StatelessWidget {
           onPressed: () {
             context.pop();
           },
-          icon: const Icon(
-            Icons.arrow_back,
-            color: Colors.white,
-          ),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
         ),
         title: const Text(
           'Back',
@@ -40,10 +37,7 @@ class BibleNavigationScreen extends StatelessWidget {
         elevation: 0,
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(2),
-          child: Container(
-            color: const Color(0xFF595D72),
-            height: 1,
-          ),
+          child: Container(color: const Color(0xFF595D72), height: 1),
         ),
       ),
       body: Column(
@@ -52,13 +46,11 @@ class BibleNavigationScreen extends StatelessWidget {
           _DailyVerseComponent(),
           Expanded(
             child: Container(
-              padding: const EdgeInsets.fromLTRB(15, 8, 15, 22),
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
               child: const Column(
+                spacing: 8,
                 mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  _SearchBar(),
-                  BookList(),
-                ],
+                children: [_SearchBar(), BookList()],
               ),
             ),
           ),
@@ -130,11 +122,7 @@ class _DailyVerseComponent extends StatelessWidget {
                         if (verse == null) return;
                         final text = '"${verse.text}", ${verse.reference}.';
 
-                        await Clipboard.setData(
-                          ClipboardData(
-                            text: text,
-                          ),
-                        );
+                        await Clipboard.setData(ClipboardData(text: text));
                       },
                       icon: Icons.copy,
                     ),
@@ -164,10 +152,7 @@ class _SearchBar extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 12),
       child: Row(
         children: [
-          const Icon(
-            Icons.search,
-            color: AppColors.gray500,
-          ),
+          const Icon(Icons.search, color: AppColors.gray500),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.only(left: 8),
@@ -215,7 +200,8 @@ class _BookListState extends State<BookList> {
   Widget build(BuildContext context) {
     return BlocBuilder<BibleBloc, BibleState>(
       builder: (context, state) {
-        final books = state.currentBible?.verses
+        final books =
+            state.currentBible?.verses
                 .where((v) => v.chapter == 1 && v.verse == 1)
                 .toList() ??
             [];
@@ -223,14 +209,15 @@ class _BookListState extends State<BookList> {
         final filteredBooks = state.searchQuery.isEmpty
             ? books
             : books
-                .where(
-                  (book) => book.bookName
-                      .toLowerCase()
-                      .startsWith(state.searchQuery.toLowerCase()),
-                )
-                .toList();
+                  .where(
+                    (book) => book.bookName.toLowerCase().startsWith(
+                      state.searchQuery.toLowerCase(),
+                    ),
+                  )
+                  .toList();
 
-        final chapters = state.currentBible?.verses
+        final chapters =
+            state.currentBible?.verses
                 .where((v) => v.book == currentBookIndex && v.verse == 1)
                 .map((v) => v.chapter)
                 .toList() ??
@@ -242,10 +229,7 @@ class _BookListState extends State<BookList> {
               color: AppColors.baseWhite,
               borderRadius: BorderRadius.circular(15),
             ),
-            padding: const EdgeInsets.symmetric(
-              horizontal: 20,
-              vertical: 10,
-            ),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             child: (filteredBooks.isNotEmpty)
                 ? Column(
                     children: [
@@ -264,48 +248,52 @@ class _BookListState extends State<BookList> {
                                       child: ListView.separated(
                                         itemBuilder: (context, index) =>
                                             GestureDetector(
-                                          onTap: () {
-                                            setState(() {
-                                              currentBookIndex =
-                                                  filteredBooks[index].book;
-                                            });
-                                          },
-                                          child: Container(
-                                            padding: const EdgeInsets.symmetric(
-                                              vertical: 10,
-                                              horizontal: 5,
-                                            ),
-                                            decoration: BoxDecoration(
-                                              color: filteredBooks[index]
-                                                          .book ==
-                                                      currentBookIndex
-                                                  ? AppColors.backgroundLight
-                                                  : Colors.transparent,
-                                            ),
-                                            child: Text(
-                                              filteredBooks[index].bookName,
-                                              style: const TextStyle(
-                                                color: AppColors.baseBlack,
-                                                fontSize: 20,
-                                                fontFamily: 'JosefinSans',
-                                                height: 22 / 20,
-                                                fontWeight: FontWeight.w600,
+                                              onTap: () {
+                                                setState(() {
+                                                  currentBookIndex =
+                                                      filteredBooks[index].book;
+                                                });
+                                              },
+                                              child: Container(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                      vertical: 10,
+                                                      horizontal: 5,
+                                                    ),
+                                                decoration: BoxDecoration(
+                                                  color:
+                                                      filteredBooks[index]
+                                                              .book ==
+                                                          currentBookIndex
+                                                      ? AppColors
+                                                            .backgroundLight
+                                                      : Colors.transparent,
+                                                ),
+                                                child: Text(
+                                                  filteredBooks[index].bookName,
+                                                  style: const TextStyle(
+                                                    color: AppColors.baseBlack,
+                                                    fontSize: 20,
+                                                    fontFamily: 'JosefinSans',
+                                                    height: 22 / 20,
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                        ),
                                         separatorBuilder: (context, index) =>
                                             Container(
-                                          height: 1,
-                                          color: AppColors.gray200,
-                                        ),
+                                              height: 1,
+                                              color: AppColors.gray200,
+                                            ),
                                         itemCount: filteredBooks.length,
                                       ),
                                     ),
                                   if (filteredBooks.isEmpty)
                                     const Padding(
-                                      padding:
-                                          EdgeInsets.symmetric(vertical: 50),
+                                      padding: EdgeInsets.symmetric(
+                                        vertical: 50,
+                                      ),
                                       child: Center(
                                         child: Text(
                                           'No books found',
@@ -331,46 +319,51 @@ class _BookListState extends State<BookList> {
                                     child: ListView.separated(
                                       itemBuilder: (context, index) =>
                                           GestureDetector(
-                                        onTap: () {
-                                          final newPage = BiblePage(
-                                            book: currentBookIndex,
-                                            chapter: chapters[index],
-                                            scrollToVerse: false,
-                                          );
-                                          bibleBloc.changeChapter(newPage);
-                                          context.pop();
-                                        },
-                                        child: Container(
-                                          padding: const EdgeInsets.symmetric(
-                                            vertical: 10,
-                                          ),
-                                          decoration: BoxDecoration(
-                                            color: (currentBookIndex ==
+                                            onTap: () {
+                                              final newPage = BiblePage(
+                                                book: currentBookIndex,
+                                                chapter: chapters[index],
+                                                scrollToVerse: false,
+                                              );
+                                              bibleBloc.changeChapter(newPage);
+                                              context.pop();
+                                            },
+                                            child: Container(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                    vertical: 10,
+                                                  ),
+                                              decoration: BoxDecoration(
+                                                color:
+                                                    (currentBookIndex ==
+                                                            state
+                                                                .currentPage
+                                                                .book &&
                                                         state
-                                                            .currentPage.book &&
-                                                    state.currentPage.chapter ==
-                                                        index + 1)
-                                                ? AppColors.backgroundLight
-                                                : Colors.transparent,
-                                          ),
-                                          child: Text(
-                                            chapters[index].toString(),
-                                            textAlign: TextAlign.center,
-                                            style: const TextStyle(
-                                              color: AppColors.baseBlack,
-                                              fontSize: 20,
-                                              fontFamily: 'JosefinSans',
-                                              height: 22 / 20,
-                                              fontWeight: FontWeight.w600,
+                                                                .currentPage
+                                                                .chapter ==
+                                                            index + 1)
+                                                    ? AppColors.backgroundLight
+                                                    : Colors.transparent,
+                                              ),
+                                              child: Text(
+                                                chapters[index].toString(),
+                                                textAlign: TextAlign.center,
+                                                style: const TextStyle(
+                                                  color: AppColors.baseBlack,
+                                                  fontSize: 20,
+                                                  fontFamily: 'JosefinSans',
+                                                  height: 22 / 20,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      ),
                                       separatorBuilder: (context, index) =>
                                           Container(
-                                        height: 1,
-                                        color: AppColors.gray200,
-                                      ),
+                                            height: 1,
+                                            color: AppColors.gray200,
+                                          ),
                                       itemCount: chapters.length,
                                     ),
                                   ),

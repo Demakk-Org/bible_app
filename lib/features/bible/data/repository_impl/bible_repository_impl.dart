@@ -71,6 +71,16 @@ class BibleRepositoryImpl implements BibleRepository {
   }
 
   @override
+  Future<Either<Failure, List<Verse>>> removeBookmark(Verse verse) async {
+    try {
+      final bookmarks = await bibleDataSources.removeBookmark(verse);
+      return Right(bookmarks);
+    } on Exception catch (e) {
+      return Left(UnknownFailure(e.toString()));
+    }
+  }
+
+  @override
   Future<Either<Failure, void>> removeBible(String id) async {
     try {
       await bibleDataSources.removeBible(id);

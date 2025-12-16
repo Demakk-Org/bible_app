@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:bible_app/pages/bible_navigation_screen.dart';
+import 'package:bible_app/pages/bookmarked_verses_screen.dart';
 import 'package:bible_app/pages/bible_screen.dart';
 import 'package:bible_app/pages/onboarding_screen.dart';
 import 'package:bible_app/pages/splash_screen.dart';
