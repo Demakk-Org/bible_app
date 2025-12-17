@@ -17,28 +17,20 @@ class TutorialAdapter extends TypeAdapter<Tutorial> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Tutorial(
-      isHomePageTutorialCompleted: fields[0] as bool,
       isBibleTutorialCompleted: fields[1] as bool,
-      isAudiosTutorialCompleted: fields[2] as bool,
-      isGroupsTutorialCompleted: fields[3] as bool,
-      isNewsTutorialCompleted: fields[4] as bool,
+      isBookmarksTutorialCompleted: (fields[2] as bool?) ?? false,
     );
   }
 
   @override
   void write(BinaryWriter writer, Tutorial obj) {
     writer
-      ..writeByte(5)
-      ..writeByte(0)
-      ..write(obj.isHomePageTutorialCompleted)
-      ..writeByte(1)
-      ..write(obj.isBibleTutorialCompleted)
       ..writeByte(2)
-      ..write(obj.isAudiosTutorialCompleted)
-      ..writeByte(3)
-      ..write(obj.isGroupsTutorialCompleted)
-      ..writeByte(4)
-      ..write(obj.isNewsTutorialCompleted);
+      ..writeByte(1)
+      ..write(obj.isBibleTutorialCompleted);
+    writer
+      ..writeByte(2)
+      ..write(obj.isBookmarksTutorialCompleted);
   }
 
   @override

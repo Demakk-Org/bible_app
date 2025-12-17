@@ -1,8 +1,7 @@
+import 'package:bible_app/features/bible/presentation/ui/bible/selected_verses_control_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:bible_app/common/utils/logger.dart';
-import 'package:bible_app/common/utils/share.dart';
 import 'package:bible_app/common/widgets/contained_icon_button.dart';
 import 'package:bible_app/core/theme/app_colors.dart';
 import 'package:bible_app/features/bible/data/model/bible_page.dart';
@@ -18,6 +17,9 @@ class BibleSection extends StatefulWidget {
     required this.isVerseSelecting,
     required this.selectedVerses,
     required this.resetSelection,
+    required this.shareButtonKey,
+    required this.bookmarkButtonKey,
+    required this.copyButtonKey,
     super.key,
   });
 
@@ -25,6 +27,9 @@ class BibleSection extends StatefulWidget {
   final bool isVerseSelecting;
   final List<Verse> selectedVerses;
   final VoidCallback resetSelection;
+  final GlobalKey shareButtonKey;
+  final GlobalKey bookmarkButtonKey;
+  final GlobalKey copyButtonKey;
 
   @override
   State<BibleSection> createState() => _BibleSectionState();
@@ -141,76 +146,7 @@ class _BibleSectionState extends State<BibleSection> {
                   }, Icons.chevron_right),
                 ),
               if (widget.isVerseSelecting)
-                Positioned(
-                  bottom: 16,
-                  right: 0,
-                  left: 0,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 25,
-                          vertical: 10,
-                        ),
-                        decoration: BoxDecoration(
-                          color: AppColors.baseWhite,
-                          borderRadius: BorderRadius.circular(40),
-                        ),
-                        child: Row(
-                          spacing: 15,
-                          children: [
-                            ContainedIconButton(
-                              action: () async {
-                                await shareCapturedWidget(_shareKey);
-                                widget.resetSelection();
-                              },
-                              icon: Icons.share_outlined,
-                            ),
-                            ContainedIconButton(
-                              action: () async {
-                                await bibleBloc.setVersesAsBookMark(
-                                  widget.selectedVerses,
-                                );
-                                widget.resetSelection();
-
-                                if (!context.mounted) return;
-
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text(
-                                      'The verse/s has/ve been bookmarked',
-                                    ),
-                                    duration: Duration(seconds: 2),
-                                  ),
-                                );
-                              },
-                              icon: Icons.bookmark_outline,
-                            ),
-                            ContainedIconButton(
-                              action: () {
-                                final bookName =
-                                    widget.selectedVerses.first.bookName;
-                                final chapter =
-                                    widget.selectedVerses.first.chapter;
-                                final versesFrom = '$bookName $chapter';
-                                final versesToCopy = widget.selectedVerses
-                                    .map((v) => '${v.verse} ${v.text}')
-                                    .join('\n');
-                                Clipboard.setData(
-                                  ClipboardData(
-                                    text: '$versesFrom: $versesToCopy',
-                                  ),
-                                );
-                              },
-                              icon: Icons.copy,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                SelectedVerseControlBar(widget: widget, shareKey: _shareKey),
             ],
           ),
         );

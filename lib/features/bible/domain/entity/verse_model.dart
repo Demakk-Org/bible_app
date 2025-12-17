@@ -1,14 +1,9 @@
 abstract class VerseModel {
-  VerseModel({
-    required this.bookName,
-    required this.book,
-    required this.chapter,
-    required this.verse,
-    required this.text,
-  });
-  final String bookName;
-  final int book;
-  final int chapter;
-  final int verse;
-  final String text;
+  String get bookName;
+  int get book;
+  int get chapter;
+  int get verse;
+  String get text;
+
+  String getReference();
 }

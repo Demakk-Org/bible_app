@@ -1,16 +1,11 @@
+import 'package:bible_app/features/bible/presentation/ui/bible_navigation/daily_verse_component.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:bible_app/common/utils/int_extension.dart';
-import 'package:bible_app/common/utils/share.dart';
-import 'package:bible_app/common/widgets/contained_icon_button.dart';
 import 'package:bible_app/core/theme/app_colors.dart';
 import 'package:bible_app/features/bible/data/model/bible_page.dart';
 import 'package:bible_app/features/bible/presentation/bloc/bible_bloc.dart';
 import 'package:bible_app/features/bible/presentation/bloc/bible_state.dart';
-import 'package:bible_app/features/daily_verse/presentation/bloc/daily_verse_bloc.dart';
-import 'package:bible_app/features/daily_verse/presentation/bloc/daily_verse_state.dart';
 
 class BibleNavigationScreen extends StatelessWidget {
   const BibleNavigationScreen({super.key});
@@ -43,96 +38,19 @@ class BibleNavigationScreen extends StatelessWidget {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          _DailyVerseComponent(),
+          DailyVerseComponent(),
           Expanded(
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
               child: const Column(
                 spacing: 8,
                 mainAxisAlignment: MainAxisAlignment.start,
-                children: [_SearchBar(), BookList()],
+                children: [_SearchBar(), _BookList()],
               ),
             ),
           ),
         ],
       ),
-    );
-  }
-}
-
-class _DailyVerseComponent extends StatelessWidget {
-  _DailyVerseComponent();
-
-  final GlobalKey verseKey = GlobalKey();
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<DailyVerseBloc, DailyVerseState>(
-      builder: (context, state) {
-        return RepaintBoundary(
-          key: verseKey,
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 45, vertical: 25),
-            decoration: BoxDecoration(
-              color: AppColors.backgroundLight,
-              border: Border.all(color: AppColors.primary),
-              borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(30),
-                bottomRight: Radius.circular(30),
-              ),
-            ),
-            child: Column(
-              spacing: 15,
-              children: [
-                Text(
-                  state.verse?.text ?? "Couldn't find a verse for today",
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    color: AppColors.baseBlack,
-                    fontSize: 20,
-                    height: 25 / 20,
-                    fontFamily: 'JosefinSans',
-                  ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      state.verse?.reference ?? "",
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        color: AppColors.baseBlack,
-                        fontSize: 20,
-                        height: 22 / 20,
-                        fontFamily: 'JosefinSans',
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    26.ww,
-                    ContainedIconButton(
-                      action: () async {
-                        await shareCapturedWidget(verseKey);
-                      },
-                      icon: Icons.share_outlined,
-                    ),
-                    5.ww,
-                    ContainedIconButton(
-                      action: () async {
-                        final verse = state.verse;
-                        if (verse == null) return;
-                        final text = '"${verse.text}", ${verse.reference}.';
-
-                        await Clipboard.setData(ClipboardData(text: text));
-                      },
-                      icon: Icons.copy,
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        );
-      },
     );
   }
 }
@@ -175,14 +93,14 @@ class _SearchBar extends StatelessWidget {
   }
 }
 
-class BookList extends StatefulWidget {
-  const BookList({super.key});
+class _BookList extends StatefulWidget {
+  const _BookList();
 
   @override
-  State<BookList> createState() => _BookListState();
+  State<_BookList> createState() => _BookListState();
 }
 
-class _BookListState extends State<BookList> {
+class _BookListState extends State<_BookList> {
   int currentBookIndex = 1;
   late final BibleBloc bibleBloc;
 

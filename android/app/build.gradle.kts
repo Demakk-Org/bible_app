@@ -11,7 +11,7 @@ import java.util.Properties
 android {
     namespace = "com.melkatole1.bible_app"
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    ndkVersion = "27.0.12077973"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11

@@ -53,6 +53,11 @@ class Verse extends HiveObject implements VerseModel {
   }
 
   @override
+  String getReference() {
+    return '$bookName $chapter:$verse';
+  }
+
+  @override
   String toString() {
     return 'Verse('
         'bookName: $bookName, '

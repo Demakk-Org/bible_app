@@ -1,10 +1,7 @@
-import 'package:bible_app/features/bible/presentation/ui/bookmark/bookmark_button.dart';
+import 'package:bible_app/features/bible/presentation/ui/bible_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:bible_app/core/router/navigation.dart';
 import 'package:bible_app/core/theme/app_colors.dart';
-import 'package:bible_app/features/bible/data/model/bible.dart';
-import 'package:bible_app/features/bible/data/model/bible_page.dart';
 import 'package:bible_app/features/bible/data/model/verse.dart';
 import 'package:bible_app/features/bible/presentation/bloc/bible_bloc.dart';
 import 'package:bible_app/features/bible/presentation/bloc/bible_state.dart';
@@ -12,6 +9,8 @@ import 'package:bible_app/features/bible/presentation/ui/bible/bible_section.dar
 import 'package:bible_app/features/bible/presentation/ui/search_drawer_view.dart';
 import 'package:bible_app/features/bible/presentation/ui/bible/select_bible_view.dart';
 import 'package:bible_app/features/bible/presentation/ui/bible/verse_block.dart';
+import 'package:bible_app/features/tutorial/presentation/cubit/tutorial_cubit.dart';
+import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 class BibleView extends StatefulWidget {
   const BibleView({super.key});
@@ -22,8 +21,19 @@ class BibleView extends StatefulWidget {
 
 class _BibleViewState extends State<BibleView> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final GlobalKey _bookChapterPickerKey = GlobalKey();
+  final GlobalKey _bookmarksButtonKey = GlobalKey();
+  final GlobalKey _searchButtonKey = GlobalKey();
+  final GlobalKey _versesListKey = GlobalKey();
+  final GlobalKey _shareVerseButtonKey = GlobalKey();
+  final GlobalKey _bookmarkVerseButtonKey = GlobalKey();
+  final GlobalKey _copyVerseButtonKey = GlobalKey();
+
+  bool _tutorialShown = false;
+
   bool isVerseSelecting = false;
   List<Verse> selectedVerses = [];
+  // todo(melkatole1): move this to a bloc
 
   void _openDrawer() {
     _scaffoldKey.currentState?.openEndDrawer();
@@ -34,6 +44,170 @@ class _BibleViewState extends State<BibleView> {
       isVerseSelecting = false;
       selectedVerses = [];
     });
+  }
+
+  void _showBibleTutorial(List<Verse> verses) {
+    final tutorialCubit = context.read<TutorialCubit>();
+
+    if (!isVerseSelecting && verses.isNotEmpty) {
+      setState(() {
+        isVerseSelecting = true;
+        selectedVerses = [verses.first];
+      });
+    }
+
+    final targets = <TargetFocus>[
+      TargetFocus(
+        identify: 'book_chapter_picker',
+        keyTarget: _bookChapterPickerKey,
+        shape: ShapeLightFocus.RRect,
+        radius: 10,
+        contents: [
+          TargetContent(
+            align: ContentAlign.bottom,
+            child: const Text(
+              'Tap here to change the book and chapter.',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+                fontFamily: 'Poppins',
+              ),
+            ),
+          ),
+        ],
+      ),
+      TargetFocus(
+        identify: 'bookmarks',
+        keyTarget: _bookmarksButtonKey,
+        shape: ShapeLightFocus.Circle,
+        contents: [
+          TargetContent(
+            align: ContentAlign.bottom,
+            child: const Text(
+              'View your bookmarked verses here.',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+                fontFamily: 'Poppins',
+              ),
+            ),
+          ),
+        ],
+      ),
+      TargetFocus(
+        identify: 'search',
+        keyTarget: _searchButtonKey,
+        shape: ShapeLightFocus.Circle,
+        contents: [
+          TargetContent(
+            align: ContentAlign.bottom,
+            child: const Text(
+              'Search for verses and jump directly to results.',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+                fontFamily: 'Poppins',
+              ),
+            ),
+          ),
+        ],
+      ),
+      TargetFocus(
+        identify: 'verses',
+        keyTarget: _versesListKey,
+        shape: ShapeLightFocus.RRect,
+        radius: 10,
+        contents: [
+          TargetContent(
+            align: ContentAlign.bottom,
+            child: Container(
+              padding: const EdgeInsets.all(12),
+              child: const Text(
+                'Long-press a verse to start selecting. Then you can share, bookmark, or copy selected verses.',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontFamily: 'Poppins',
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+      TargetFocus(
+        identify: 'verse_share',
+        keyTarget: _shareVerseButtonKey,
+        shape: ShapeLightFocus.Circle,
+        contents: [
+          TargetContent(
+            align: ContentAlign.top,
+            child: const Text(
+              'After long-pressing a verse, use this button to share the selected verse(s).',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+                fontFamily: 'Poppins',
+              ),
+            ),
+          ),
+        ],
+      ),
+      TargetFocus(
+        identify: 'verse_bookmark',
+        keyTarget: _bookmarkVerseButtonKey,
+        shape: ShapeLightFocus.Circle,
+        contents: [
+          TargetContent(
+            align: ContentAlign.top,
+            child: const Text(
+              'Bookmark the selected verse(s) so you can find them later.',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+                fontFamily: 'Poppins',
+              ),
+            ),
+          ),
+        ],
+      ),
+      TargetFocus(
+        identify: 'verse_copy',
+        keyTarget: _copyVerseButtonKey,
+        shape: ShapeLightFocus.Circle,
+        contents: [
+          TargetContent(
+            align: ContentAlign.top,
+            child: const Text(
+              'Copy the selected verse(s) to your clipboard.',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+                fontFamily: 'Poppins',
+              ),
+            ),
+          ),
+        ],
+      ),
+    ];
+
+    TutorialCoachMark(
+      targets: targets,
+      colorShadow: Colors.black,
+      hideSkip: false,
+      textSkip: 'SKIP',
+      paddingFocus: 8,
+      opacityShadow: 0.8,
+      onFinish: () {
+        tutorialCubit.completeBibleTutorial();
+        resetSelection();
+      },
+      onSkip: () {
+        tutorialCubit.completeBibleTutorial();
+        resetSelection();
+        return true;
+      },
+    ).show(context: context);
   }
 
   @override
@@ -70,19 +244,37 @@ class _BibleViewState extends State<BibleView> {
             bottomPadding,
           ];
 
+          if (!_tutorialShown && bible != null && !state.isSelectingBible) {
+            final tutorialState = context.read<TutorialCubit>().state;
+            if (tutorialState.showBibleTutorial) {
+              _tutorialShown = true;
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                if (!mounted) return;
+                _showBibleTutorial(verses);
+              });
+            }
+          }
+
           return Column(
             children: [
-              _BibleAppBar(
-                bible: bible!,
-                currentPage: currentPage,
+              BibleAppBar(
                 searchCallbackFn: _openDrawer,
+                bookChapterPickerKey: _bookChapterPickerKey,
+                bookmarksButtonKey: _bookmarksButtonKey,
+                searchButtonKey: _searchButtonKey,
               ),
               if (!state.isSelectingBible)
-                BibleSection(
-                  pageContent: pageContent,
-                  isVerseSelecting: isVerseSelecting,
-                  selectedVerses: selectedVerses,
-                  resetSelection: resetSelection,
+                KeyedSubtree(
+                  key: _versesListKey,
+                  child: BibleSection(
+                    pageContent: pageContent,
+                    isVerseSelecting: isVerseSelecting,
+                    selectedVerses: selectedVerses,
+                    resetSelection: resetSelection,
+                    shareButtonKey: _shareVerseButtonKey,
+                    bookmarkButtonKey: _bookmarkVerseButtonKey,
+                    copyButtonKey: _copyVerseButtonKey,
+                  ),
                 ),
               if (state.isSelectingBible) const SelectBibleView(),
             ],
@@ -147,120 +339,5 @@ class _BibleViewState extends State<BibleView> {
         },
       );
     }).toList();
-  }
-}
-
-class _BibleAppBar extends StatelessWidget {
-  const _BibleAppBar({
-    required this.bible,
-    required this.currentPage,
-    required this.searchCallbackFn,
-  });
-
-  final Bible bible;
-  final BiblePage currentPage;
-  final VoidCallback searchCallbackFn;
-
-  @override
-  Widget build(BuildContext context) {
-    final bibleBloc = context.read<BibleBloc>();
-    final bookName = bible.verses
-        .firstWhere((v) => v.book == currentPage.book)
-        .bookName;
-    final isSelectingBible = bibleBloc.state.isSelectingBible;
-    return Container(
-      padding: const EdgeInsets.only(top: 45, left: 22, right: 22, bottom: 8.3),
-      decoration: const BoxDecoration(color: AppColors.primary),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          if (bibleBloc.state.isRedirected)
-            IconButton.filled(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              icon: const Icon(Icons.arrow_back),
-            ),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 1.5),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: AppColors.baseWhite),
-            ),
-            child: Row(
-              spacing: 10,
-              children: [
-                _CurrentBibleInfo(
-                  label: '$bookName ${currentPage.chapter}',
-                  callback: () {
-                    if (bibleBloc.state.isSelectingBible) {
-                      bibleBloc.closeBibleSelectView();
-                      return;
-                    }
-                    BibleNavigationRoute().push<void>(context);
-                  },
-                  isActive: !isSelectingBible,
-                ),
-                Container(
-                  height: 25,
-                  width: 1,
-                  decoration: const BoxDecoration(color: AppColors.baseWhite),
-                ),
-                _CurrentBibleInfo(
-                  label: bible.shortName,
-                  callback: bibleBloc.openBibleSelectView,
-                  isActive: isSelectingBible,
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                BookmarkButton(),
-                IconButton.filled(
-                  onPressed: () {
-                    searchCallbackFn();
-                    bibleBloc.closeBibleSelectView();
-                  },
-                  icon: const Icon(Icons.search),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _CurrentBibleInfo extends StatelessWidget {
-  const _CurrentBibleInfo({
-    required this.label,
-    required this.callback,
-    required this.isActive,
-  });
-
-  final String label;
-  final VoidCallback callback;
-  final bool isActive;
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: callback,
-      child: Text(
-        label,
-        style: TextStyle(
-          fontSize: 16,
-          height: 22 / 16,
-          fontFamily: 'JosefinSans',
-          color: isActive
-              ? AppColors.baseWhite
-              : AppColors.baseWhite.withAlpha(127),
-        ),
-      ),
-    );
   }
 }

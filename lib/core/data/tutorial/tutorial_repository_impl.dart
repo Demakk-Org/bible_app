@@ -18,46 +18,29 @@ class TutorialRepositoryImpl implements TutorialRepository {
   }
 
   @override
-  Either<Failure, TutorialModel> completeHomePageTutorial() {
-    return _completeTutorials(home: true);
-  }
-
-  @override
   Either<Failure, TutorialModel> completeBibleTutorial() {
     return _completeTutorials(bible: true);
   }
 
   @override
-  Either<Failure, TutorialModel> completeAudiosTutorial() {
-    return _completeTutorials(audios: true);
+  Either<Failure, TutorialModel> completeBookmarksTutorial() {
+    return _completeTutorials(bookmarks: true);
   }
 
-  @override
-  Either<Failure, TutorialModel> completeGroupsTutorial() {
-    return _completeTutorials(groups: true);
-  }
-
-  @override
-  Either<Failure, TutorialModel> completeNewsTutorial() {
-    return _completeTutorials(news: true);
+  Either<Failure, TutorialModel> resetBibleTutorial() {
+    return _completeTutorials(bible: false);
   }
 
   Either<Failure, TutorialModel> _completeTutorials({
-    bool? home,
     bool? bible,
-    bool? audios,
-    bool? groups,
-    bool? news,
+    bool? bookmarks,
   }) {
     try {
       final current = tutorialBox.get('tutorial') ?? Tutorial.defaultTutorial();
       final updated = Tutorial(
-        isHomePageTutorialCompleted:
-            home ?? current.isHomePageTutorialCompleted,
         isBibleTutorialCompleted: bible ?? current.isBibleTutorialCompleted,
-        isAudiosTutorialCompleted: audios ?? current.isAudiosTutorialCompleted,
-        isGroupsTutorialCompleted: groups ?? current.isGroupsTutorialCompleted,
-        isNewsTutorialCompleted: news ?? current.isNewsTutorialCompleted,
+        isBookmarksTutorialCompleted:
+            bookmarks ?? current.isBookmarksTutorialCompleted,
       );
       unawaited(tutorialBox.put('tutorial', updated));
       return Right(updated);

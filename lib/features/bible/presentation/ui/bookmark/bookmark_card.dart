@@ -9,46 +9,67 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class BookmarkCard extends StatelessWidget {
   const BookmarkCard({
     required this.verse,
-    required this.reference,
     super.key,
+    this.tileKey,
+    this.deleteButtonKey,
   });
 
   final Verse verse;
-  final String reference;
+  final GlobalKey? tileKey;
+  final GlobalKey? deleteButtonKey;
 
   @override
   Widget build(BuildContext context) {
     final bibleBloc = context.read<BibleBloc>();
 
+    final currentBible = bibleBloc.state.currentBible;
+    Verse displayVerse = verse;
+    if (currentBible != null) {
+      try {
+        displayVerse = currentBible.getVerse(
+          book: verse.book,
+          chapter: verse.chapter,
+          verse: verse.verse,
+        );
+      } on StateError {
+        displayVerse = verse;
+      }
+    }
+
     return Material(
       color: AppColors.baseWhite,
       borderRadius: BorderRadius.circular(12),
       child: ListTile(
+        key: tileKey,
         title: Text(
-          verse.text,
+          displayVerse.text,
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
           style: const TextStyle(fontFamily: 'JosefinSans'),
         ),
         subtitle: Text(
-          reference,
+          displayVerse.getReference(),
           style: const TextStyle(
             fontFamily: 'JosefinSans',
             fontWeight: FontWeight.w600,
           ),
         ),
         trailing: IconButton.filled(
+          key: deleteButtonKey,
           style: IconButton.styleFrom(
             backgroundColor: Colors.redAccent,
             foregroundColor: Colors.white,
+            minimumSize: const Size(32, 32),
+            padding: EdgeInsets.zero,
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
           ),
           onPressed: () {
             bibleBloc.removeBookmark(verse);
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Removed $reference')),
+              SnackBar(content: Text('Removed ${displayVerse.getReference()}')),
             );
           },
-          icon: const Icon(Icons.delete_outline, size: 20),
+          icon: const Icon(Icons.delete_outline, size: 18),
         ),
         onTap: () {
           final newPage = BiblePage(

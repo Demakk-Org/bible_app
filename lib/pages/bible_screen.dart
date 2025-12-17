@@ -25,10 +25,15 @@ class BibleScreen extends StatelessWidget {
               },
               child: ListView(
                 physics: const AlwaysScrollableScrollPhysics(),
-                children: const [
+                children: [
                   SizedBox(height: 300),
                   Center(
-                    child: Text('Something went wrong, refresh the page.'),
+                    child: Text(
+                      'Something went wrong, refresh the page.',
+                      style: Theme.of(
+                        context,
+                      ).textTheme.bodyLarge?.copyWith(fontFamily: "Poppins"),
+                    ),
                   ),
                 ],
               ),
